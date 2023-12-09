@@ -1,0 +1,14 @@
+{
+  "name": "ColorFont Master",
+  "description": "Color picker and font identifier extension",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": [
+      "storage",
+      "activeTab",
+      "scripting"
+  ],
+  "action": {
+      "default_popup": "popup.html"
+  }
+}
