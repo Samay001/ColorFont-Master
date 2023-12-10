@@ -1,18 +1,24 @@
 const colorPickerBtn = document.querySelector("#color-Button");
 const clearAll = document.querySelector(".clear-button");
 const colorList = document.querySelector(".all-colors");
-const colorSelector = JSON.parse(localStorage.getItem("color-selector")|| "[]") ;
+const clipboard = document.querySelector(".clipboardButton");
+const colorSelector = JSON.parse(localStorage.getItem("color-selector") || "[]");
 
 const showColor = () => {
-    if(!colorSelector.length) return; 
-    colorList.innerHTML = colorSelector.map(color => `
+    if (!colorSelector.length) return;
+    else if (colorSelector.length < 6) {
+        colorList.innerHTML = colorSelector.map(color => `
         <li class="color">
-            <span class="rect" style="background: ${color}; border: 1px solid ${color == "#ffffff" ? "#ccc": color}"></span>
+            <span class="rect" style="background: ${color}; border: 1px solid ${color == "#ffffff" ? "#ccc" : color}"></span>
             <span class="value hex" data-color="${color}">${color}</span>
         </li>
-    `).join(""); 
-    document.querySelector(".all-colors").classList.remove("hide");
-}
+        `).join("");
+        document.querySelector(".all-colors").classList.remove("hide");
+    } else {
+        alert("You have reached the limit of colors again choosing the colors will clear the list");
+        colorSelector.length = 0;
+    }
+};
 showColor();
 
 const activateEyeDropper = () => {
@@ -21,9 +27,8 @@ const activateEyeDropper = () => {
         try {
             const eyeDropper = new EyeDropper();
             const { sRGBHex } = await eyeDropper.open();
-            navigator.clipboard.writeText(sRGBHex);
 
-            if(!colorSelector.includes(sRGBHex)) {
+            if (!colorSelector.includes(sRGBHex)) {
                 colorSelector.push(sRGBHex);
                 localStorage.setItem("color-selector", JSON.stringify(colorSelector));
                 showColor();
@@ -33,21 +38,26 @@ const activateEyeDropper = () => {
         }
         document.body.style.display = "block";
     }, 10);
-}
+};
+
+clipboard.addEventListener("click", () => {
+    const lastColor = colorSelector[colorSelector.length - 1];
+    if (lastColor) {
+        navigator.clipboard.writeText(lastColor);
+    }
+});
 
 const clearAllColors = () => {
     colorSelector.length = 0;
     localStorage.setItem("color-selector", JSON.stringify(colorSelector));
     document.querySelector(".all-colors").classList.add("hide");
-}
+};
 
 clearAll.addEventListener("click", clearAllColors);
 colorPickerBtn.addEventListener("click", activateEyeDropper);
 
 
-
-
-//------------------------font identifier-----------------------
+// ------------------------font identifier-----------------------
 
 const getCurrentTab = async () => {
     let queryOptions = { active: true, lastFocusedWindow: true };
@@ -74,4 +84,3 @@ document.querySelector("#font-Button").addEventListener("click", async () => {
         }
     });
 });
-

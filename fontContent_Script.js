@@ -3,14 +3,17 @@ const fontDisplay = document.createElement("p");
 document.body.appendChild(fontDisplay);
 
 fontDisplay.style.cssText = `
-    position: absolute;
+    position: fixed;
     font-size: 14px;
     overflow: hidden;
     padding: 5px;
     width: 140px;
     height: 80px;
-    background-color: grey;
+    background-color: black;
     line-height: 1.3;
+    font-weight: bold;
+    color: white;
+    z-index: 99;
 `;
 
 const mouseCoordinateAndContent = (event) =>{
@@ -21,7 +24,7 @@ const mouseCoordinateAndContent = (event) =>{
 
     const elementUnderMouse = event.target;
     const elementStyle = window.getComputedStyle(elementUnderMouse);
-    console.log(elementStyle.fontFamily);
+    // console.log(elementStyle.fontFamily);
     fontDisplay.textContent = elementStyle.fontFamily;
 }
 
@@ -41,7 +44,7 @@ chrome.runtime.onMessage.addListener((message,sender,sendResponse) =>{
 });
 
 document.addEventListener("click", () => {
-    console.warn("------------CLOSED--------");
+    // console.warn("------------CLOSED--------");
     document.removeEventListener("mousemove", mouseCoordinateAndContent);
     fontDisplay.style.display = "none";
     document.body.style.cursor = "auto";
