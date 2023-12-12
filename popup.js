@@ -69,7 +69,7 @@ document.querySelector("#font-Button").addEventListener("click", async () => {
     const tab = await getCurrentTab();
     chrome.tabs.sendMessage(tab.id, { message: "check" }, (response) => {
         if (chrome.runtime.lastError) {
-            console.error(chrome.runtime.lastError);
+            // console.error(chrome.runtime.lastError);
             chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 files: ["fontContent_Script.js"]
